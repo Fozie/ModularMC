@@ -51,6 +51,13 @@ public final class NetworkManager {
 		new ClientThread(this).start();
 	}
 	
+	public void handleAllPackets() {
+		synchronized(clients) {
+			for(final Client c : clients)
+				c.process();
+		}
+	}
+	
 	public void pushAllClients() {
 			synchronized(clients) {
 				Client c;

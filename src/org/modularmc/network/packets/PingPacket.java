@@ -20,6 +20,7 @@ public class PingPacket extends Packet {
 	}
 	
 	public void write(PacketData data) {
+		data.ensureSpace(8);
 		data.writeLong(time);
 	}
 	

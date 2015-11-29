@@ -1,6 +1,7 @@
 package org.modularmc.network.packets.login;
 
 import org.modularmc.chat.ChatMessage;
+import org.modularmc.io.ByteBufUtils;
 import org.modularmc.io.PacketData;
 import org.modularmc.network.Packet;
 
@@ -21,7 +22,9 @@ public class DisconnectPacket extends Packet {
 	}
 	
 	public void write(PacketData data) {
-		data.writeUTF8VarInt(reason.getJSON());
+		String reason = this.reason.getJSON();
+		data.ensureSpace(reason.length() + ByteBufUtils.getVarIntSize(reason.length()));
+		data.writeUTF8VarInt(reason);
 	}
 
 	

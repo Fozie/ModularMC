@@ -179,4 +179,8 @@ public class PacketData {
 	public ByteBuf getUnderlyingBuffer() {
 		return data;
 	}
+	
+	public void ensureSpace(int numBytes) {
+		data.ensureWritable(numBytes);
+	}
 }

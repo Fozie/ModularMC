@@ -48,6 +48,9 @@ public class Client {
 	 * @param p
 	 */
 	public void accept(Packet p) {
+		if(state.equals(State.HANDSHAKE) && p.getID() == 0)
+			PacketHandler.handle(this, p);
+		else
 		synchronized (packetQueue) {
 			packetQueue.add(p);
 		}

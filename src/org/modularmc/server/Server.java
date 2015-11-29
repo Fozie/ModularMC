@@ -13,6 +13,7 @@ public class Server {
 		
 		
 		while(true) {
+			net.handleAllPackets();
 			Thread.sleep(10);
 		}
 	}

@@ -15,10 +15,12 @@ public class LengthDecoder extends ByteToMessageDecoder {
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> output) throws Exception {
-		if(buf.readableBytes() == 0)
+		if(buf.readableBytes() < 2)
 			return;
-		
-		output.add(buf.readBytes(ByteBufUtils.readVarInt(buf)));
+		final int l = ByteBufUtils.readVarInt(buf);
+		if(buf.readableBytes() < l)
+			return;
+		output.add(buf.readBytes(l));
 	}
 
 }

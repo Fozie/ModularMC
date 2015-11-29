@@ -16,7 +16,7 @@ public class ClientThread extends Thread {
 		for(;;) {
 			net.pushAllClients();
 			try {
-				ClientThread.sleep(100);
+				ClientThread.sleep(1);
 			} catch (InterruptedException e) {
 			}
 		}

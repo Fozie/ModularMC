@@ -31,4 +31,20 @@ public class ByteBufUtils {
 				break;
 		}
 	}
+	
+	public static int getVarIntSize(int varint) {
+		if ((varint & 0xFFFFFF80) == 0)
+			return 1;
+
+		if ((varint & 0xFFFFC000) == 0)
+			return 2;
+
+		if ((varint & 0xFFE00000) == 0)
+			return 3;
+		
+		if ((varint & 0xF0000000) == 0)
+			return 4;
+
+		return 5;
+	}
 }
