@@ -1,5 +1,6 @@
 package org.modularmc.server;
 
+import org.modularmc.handlers.LoginHandler;
 import org.modularmc.network.NetworkManager;
 
 /**
@@ -8,12 +9,17 @@ import org.modularmc.network.NetworkManager;
 public class Server {
 	private final NetworkManager net;
 	
+	private LoginHandler loginHandler;
+	
 	public Server() throws Exception {
 		net = new NetworkManager(this, 25565); //TODO: Config
-		
+		loginHandler = new LoginHandler(this);
 		
 		while(true) {
-			net.handleAllPackets();
+			net.processClients();
+			
+			net.getPacketHandler().getLoginHandler().process();
+			
 			Thread.sleep(10);
 		}
 	}

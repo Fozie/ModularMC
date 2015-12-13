@@ -3,22 +3,31 @@ package org.modularmc.network;
 import java.lang.reflect.InvocationTargetException;
 
 import org.modularmc.Logger;
+import org.modularmc.handlers.LoginHandler;
 import org.modularmc.network.packets.HandshakePacket;
 import org.modularmc.network.packets.PingPacket;
 import org.modularmc.network.packets.StatusPacket;
 import org.modularmc.network.packets.StatusRequestPacket;
 import org.modularmc.network.packets.login.LoginPacket;
+import org.modularmc.server.Server;
 
 /**
  * @author Caspar Norée Palm
  */
 public class PacketHandler {
 	
-	static PacketHandler handler = new PacketHandler();
+	final Server server;
 	
-	public static <T extends Packet> void handle(Client c, T packet) {
+	final LoginHandler loginHandler;
+	
+	public PacketHandler(Server server) {
+		this.server = server;
+		loginHandler = new LoginHandler(server);
+	}
+	
+	public <T extends Packet> void handle(Client c, T packet) {
 		try {
-			PacketHandler.class.getMethod("handle", Client.class, packet.getClass()).invoke(handler, c, packet);
+			PacketHandler.class.getMethod("handle", Client.class, packet.getClass()).invoke(this, c, packet);
 		} catch (IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException
 				| SecurityException e) {
@@ -40,6 +49,14 @@ public class PacketHandler {
 	}
 	
 	public void handle(Client c, LoginPacket packet) {
-		c.kick("Sorry, WIP");
+		c.disconnect("WIP");
+		//loginHandler.addClient(c);
+	}
+
+	/**
+	 * @return
+	 */
+	public LoginHandler getLoginHandler() {
+		return loginHandler;
 	}
 }

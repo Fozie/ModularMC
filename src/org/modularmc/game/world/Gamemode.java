@@ -4,10 +4,18 @@ package org.modularmc.game.world;
  * @author Caspar Norée Palm
  */
 public enum Gamemode {
-	SURVIVAL,
-	CREATIVE,
-	ADVENTURE,
-	SPECTATOR;
+	SURVIVAL(0),
+	CREATIVE(1),
+	ADVENTURE(2),
+	SPECTATOR(3);
 	
-	//TODO: Hardcore :)
+	final int id;
+	
+	private Gamemode(int id) {
+		this.id = id;
+	}
+	
+	public int getID() {
+		return id;
+	}
 }

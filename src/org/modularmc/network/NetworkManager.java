@@ -6,10 +6,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.modularmc.network.netty.NettyChannelInitializer;
 import org.modularmc.server.Server;
@@ -25,15 +23,15 @@ public final class NetworkManager {
 	final EventLoopGroup workerGroup;
 	
 	final List<Client> clients;
-	final Queue<Client> pendingClients;
 	
+	PacketHandler packetHandler;
 	
 	public NetworkManager(Server server, int port) {
 		this.server = server;
 		
-		clients = new ArrayList<Client>();
-		pendingClients = new ArrayDeque<Client>();
+		this.packetHandler = new PacketHandler(server);
 		
+		clients = new CopyOnWriteArrayList<>();
 		bossGroup = new NioEventLoopGroup();
 		workerGroup = new NioEventLoopGroup();
 
@@ -42,30 +40,21 @@ public final class NetworkManager {
 											.channel(NioServerSocketChannel.class)
 											.childHandler(new NettyChannelInitializer(server));
 		try {
-			bootstrap.bind(new InetSocketAddress("0.0.0.0", port)); //TODO: Configurable listing port
+			bootstrap.bind(new InetSocketAddress("0.0.0.0", port)); //TODO: Configurable listing port and adress
 		} catch (Throwable t) {
 			System.err.println("Failed to bind to port.");
 			System.exit(1);
 		}
-		
-		new ClientThread(this).start();
 	}
 	
-	public void handleAllPackets() {
-		synchronized(clients) {
-			for(final Client c : clients)
-				c.process();
-		}
+	public void processClients() {
+		for (Client c : clients)
+			c.process();
 	}
 	
-	public void pushAllClients() {
-			synchronized(clients) {
-				Client c;
-				synchronized(pendingClients) {
-					while((c = pendingClients.poll()) != null)
-						clients.add(c);
-				}
-			}
+	
+	public void removeClient(final Client c) {
+		clients.remove(c);
 	}
 	
 	public void shutdown() {
@@ -74,9 +63,15 @@ public final class NetworkManager {
 	}
 
 	public void addClient(final Client client) {
-		synchronized(pendingClients) {
-			pendingClients.add(client);
-		}
+		if(!clients.contains(client))
+			clients.add(client);
+	}
+
+	/**
+	 * @return
+	 */
+	public PacketHandler getPacketHandler() {
+		return packetHandler;
 	}
 	
 }

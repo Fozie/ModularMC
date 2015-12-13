@@ -3,6 +3,7 @@ package org.modularmc.network.netty;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
+import org.modularmc.network.DOSProtector;
 import org.modularmc.network.protocol.LengthDecoder;
 import org.modularmc.network.protocol.LengthEncoder;
 import org.modularmc.network.protocol.PacketDecoder;
@@ -23,6 +24,11 @@ public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
 	
 	@Override
 	protected void initChannel(SocketChannel sc) throws Exception {
+//		if(DOSProtector.instance.registerConnection(sc.remoteAddress().)) {
+//			sc.shutdownOutput();
+//			sc.disconnect();
+//			return;
+//		}
 		sc.pipeline()
 		.addLast("lengthdecoder", new LengthDecoder())
 		.addLast("decoder", new PacketDecoder())

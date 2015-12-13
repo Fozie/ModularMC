@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import org.modularmc.utils.Vec3i;
+
 /**
  * @author Caspar Norée Palm
  */
@@ -35,7 +37,7 @@ public class PacketData {
 	public long readLong() {
 		return data.readLong();
 	}
-
+	
 	public float readFloat() {
 		return Float.intBitsToFloat(readInt());
 	}
@@ -128,8 +130,19 @@ public class PacketData {
 	public void writeDouble(final double v) {
 		writeDouble(Double.doubleToLongBits(v));
 	}
-
 	
+	public void writePosition(int x, int y, int z) {
+		writeLong(((x & 0x3FFFFFF) << 38) | ((y & 0xFFF) << 26) | (z & 0x3FFFFFF));
+	}
+	
+	public Vec3i readPosition() {
+		long val = readLong();
+		Vec3i vec = new Vec3i();
+		vec.setX((int) (val >> 38));
+		vec.setY((int) ((val >> 26) & 0xFFF));
+		vec.setZ((int) (val << 38 >> 38));
+		return vec;
+	}
 	public void writeVarInt(int v) {
 		byte part;
 		while (true) {

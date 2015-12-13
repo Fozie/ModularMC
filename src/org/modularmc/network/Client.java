@@ -14,6 +14,10 @@ import org.modularmc.server.Server;
  */
 public class Client {
 	
+	final Server server;
+	
+	boolean isDead;
+	
 	private final Queue<Packet> packetQueue;
 	
 	public enum State {
@@ -29,10 +33,13 @@ public class Client {
 	final Channel ch;
 	
 	public Client(Server server, Channel channel) {
+		this.server = server;
 		this.ch = channel;
 		this.packetQueue = new ArrayDeque<>(10);
 		System.out.println("Client created");
 		state = State.HANDSHAKE;
+		
+		isDead = false;
 	}
 
 	public void process() {
@@ -40,7 +47,7 @@ public class Client {
 			Packet p;
 
 			while ((p = packetQueue.poll()) != null)
-				PacketHandler.handle(this, p);
+				server.getNetwork().getPacketHandler().handle(this, p);
 		}
 	}
 	
@@ -49,21 +56,21 @@ public class Client {
 	 */
 	public void accept(Packet p) {
 		if(state.equals(State.HANDSHAKE) && p.getID() == 0)
-			PacketHandler.handle(this, p);
+			server.getNetwork().getPacketHandler().handle(this, p);
 		else
 		synchronized (packetQueue) {
 			packetQueue.add(p);
 		}
 	}
 
-	public void kick() {
-		kick("Your connection was terminated! (Kicked)");
+	public void disconnect() {
+		disconnect("Your connection was terminated!");
 	}
 	
-	public void kick(String reason) {
+	public void disconnect(String message) {
 		
 		if(state.equals(State.LOGIN))
-			sendPacket(new DisconnectPacket(new ChatMessage(reason)));
+			sendPacket(new DisconnectPacket(new ChatMessage(message)));
 		destroy();
 	}
 	
@@ -71,6 +78,8 @@ public class Client {
 	 * 
 	 */
 	public void destroy() {
+		isDead = true;
+		server.getNetwork().removeClient(this);
 		ch.close();
 		System.out.println("Client died");
 	}
@@ -79,13 +88,17 @@ public class Client {
 		return state;
 	}
 	
+	public boolean isDead() {
+		return isDead;
+	}
 	
 	public void setState(State nextState) {
 		this.state = nextState;
 	}
 	
 	public void sendPacket(Packet p) {
-		ch.writeAndFlush(p);
+		if(!isDead)
+			ch.writeAndFlush(p);
 	}
 	
 }

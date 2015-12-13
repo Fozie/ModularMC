@@ -5,12 +5,8 @@ import org.modularmc.game.world.World;
 /**
  * @author Caspar Norée Palm
  */
-public class LivingEntity extends Entity {
-	private double health;
-	private String name;
-	
-	public LivingEntity(World w) {
+public class Human extends LivingEntity {
+	public Human(World w) {
 		super(w);
 	}
-	
 }

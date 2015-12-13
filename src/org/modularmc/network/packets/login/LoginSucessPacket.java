@@ -8,7 +8,7 @@ import org.modularmc.network.Packet;
 /**
  * @author Caspar Norée Palm
  */
-public class LoginSucessfulPacket extends Packet {
+public class LoginSucessPacket extends Packet {
 
 	String username;
 	UUID uuid;

@@ -3,6 +3,5 @@ package org.modularmc.game.world.blocks;
 /**
  * @author Caspar Norée Palm
  */
-public abstract class Block {
-	public abstract int getHardness();
+public class BlockManager {
 }

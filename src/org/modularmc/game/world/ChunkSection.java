@@ -10,6 +10,7 @@ public class ChunkSection {
 	
 	private char[] blockTypes;
 	private byte[] lightning; // Nibblearray, each byte contains both the skylight and the blocklight. 4 bits for skylight, 4 bits for blocklight.
+
 	
 	private int count; // Number of blocks in this section (Not air)
 
@@ -42,7 +43,7 @@ public class ChunkSection {
 	 * @return
 	 */
 	public int writeLightData(byte[] data, int pos) {
-		return 0;
+		return pos;
 	}
     
 }
