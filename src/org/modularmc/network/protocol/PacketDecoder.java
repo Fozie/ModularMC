@@ -32,8 +32,13 @@ public class PacketDecoder extends ByteToMessageDecoder {
 		
 		if(protocol.hasPacket(state, id)) {
 			Packet p = protocol.createPacket(state, id);
-			
-			p.read(new PacketData(buf));
+			try {
+				p.read(new PacketData(buf));
+			}
+			catch(Exception e) {
+				ctx.channel().close();
+				return;
+			}
 			buf.skipBytes(buf.readableBytes());
 			
 			output.add(p);

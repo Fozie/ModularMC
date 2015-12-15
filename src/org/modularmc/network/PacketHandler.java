@@ -49,8 +49,8 @@ public class PacketHandler {
 	}
 	
 	public void handle(Client c, LoginPacket packet) {
-		c.disconnect("WIP");
-		//loginHandler.addClient(c);
+//		c.disconnect("WIP");
+		loginHandler.addClient(c);
 	}
 
 	/**

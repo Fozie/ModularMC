@@ -16,13 +16,16 @@ public class World {
 	
 	private Map<Long, Chunk> loadedChunks;
 
+	private Dimension dimensions;
+	
 	private int time; // In ticks ranging between 0 - 24000 (1s = 20ticks)
 	private long age; // Age of world in ticks
 	
-	public World(Server server, String name) {
+	public World(Server server, String name, Dimension dimension) {
 		this.server = server;
 		this.name = name;
 		this.loadedChunks = new HashMap<>();
+		this.dimensions = dimension;
 	}
 	
 	

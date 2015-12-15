@@ -12,7 +12,7 @@ public class ClientbondPlayerPositionAndLookPacket extends Packet {
 	
 	@Override
 	public int getID() {
-		return 0;
+		return 0x08;
 	}
 	
 	public double getX() {

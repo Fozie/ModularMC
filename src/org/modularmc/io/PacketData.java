@@ -171,8 +171,7 @@ public class PacketData {
 	}
 
 	public void writeUUID(UUID uuid) {
-		writeLong(uuid.getMostSignificantBits());
-		writeLong(uuid.getLeastSignificantBits());
+		this.writeUTF8VarInt(uuid.toString());
 	}
 	
 	public void writeString(final String s, final Charset charset) {
@@ -195,5 +194,9 @@ public class PacketData {
 	
 	public void ensureSpace(int numBytes) {
 		data.ensureWritable(numBytes);
+	}
+
+	public void writeBytes(byte[] bytes) {
+		data.writeBytes(bytes);
 	}
 }

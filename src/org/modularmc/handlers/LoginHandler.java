@@ -9,8 +9,11 @@ import org.modularmc.game.world.Difficulty;
 import org.modularmc.game.world.Dimension;
 import org.modularmc.game.world.Gamemode;
 import org.modularmc.network.Client;
+import org.modularmc.network.Client.State;
 import org.modularmc.network.packets.login.LoginSucessPacket;
 import org.modularmc.network.packets.play.JoinGamePacket;
+import org.modularmc.network.packets.play.player.ClientbondPlayerPositionAndLookPacket;
+import org.modularmc.network.packets.play.world.SpawnPositionPacket;
 import org.modularmc.server.Server;
 
 /**
@@ -56,6 +59,7 @@ public class LoginHandler {
 		sucess.setUuid(UUID.randomUUID());
 		
 		c.sendPacket(sucess);
+		c.setState(State.PLAY);
 		
 		JoinGamePacket join = new JoinGamePacket();
 		join.setDifficulty(Difficulty.PEACEFUL);
@@ -65,7 +69,19 @@ public class LoginHandler {
 		
 		c.sendPacket(join);
 		
-		Player p = new Player(c, null);
-		p.sendPosition();
+		SpawnPositionPacket spawnpos = new SpawnPositionPacket();
+		
+		c.sendPacket(spawnpos);
+		
+		ClientbondPlayerPositionAndLookPacket p = new ClientbondPlayerPositionAndLookPacket();
+		p.setX(0);
+		p.setY(100);
+		p.setZ(0);
+		
+		p.setYaw(90);
+		p.setPitch(0);
+		
+		c.sendPacket(p);
+		c.sendPacket(p);
 	}
 }

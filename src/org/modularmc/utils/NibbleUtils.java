@@ -13,7 +13,7 @@ public class NibbleUtils {
         }
     }
     
-    public void set(byte[] data, int pos, byte value) {
+    public static void set(byte[] data, int pos, byte value) {
         value &= 0xf;
         int index = pos / 2;
         byte half = data[index];
