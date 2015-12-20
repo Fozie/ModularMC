@@ -1,4 +1,4 @@
-package org.modularmc.game.material.items;
+package org.modularmc.game.material;
 
 /**
  * @author Caspar Norée Palm
@@ -6,5 +6,6 @@ package org.modularmc.game.material.items;
 public enum ToolTypes {
 	PICKAXE,
 	SHOVEL,
-	
+	SWORD,
+	AXE,
 }
