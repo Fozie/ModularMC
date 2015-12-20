@@ -73,7 +73,6 @@ public class Client {
 	}
 	
 	public void disconnect(String message) {
-		
 		if(state.equals(State.LOGIN))
 			sendPacket(new DisconnectPacket(new ChatMessage(message)));
 		destroy();
@@ -103,6 +102,10 @@ public class Client {
 	
 	public boolean isActive() {
 		return ch.isActive();
+	}
+	
+	public Player getPlayer() {
+		return player.get();
 	}
 	
 	public void setPlayer(final Player p) {

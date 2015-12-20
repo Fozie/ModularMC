@@ -8,7 +8,7 @@ import org.modularmc.game.world.Chunk;
 import org.modularmc.game.world.World;
 import org.modularmc.network.Client;
 import org.modularmc.network.Packet;
-import org.modularmc.network.packets.play.player.ClientbondPlayerPositionAndLookPacket;
+import org.modularmc.network.packets.play.player.ClientboundPlayerPositionAndLookPacket;
 import org.modularmc.network.packets.play.world.ChunkBulkPacket;
 
 /**
@@ -59,7 +59,7 @@ public class Player extends Human {
 	}
 	
 	public void sendPosition() {
-		ClientbondPlayerPositionAndLookPacket p = new ClientbondPlayerPositionAndLookPacket();
+		ClientboundPlayerPositionAndLookPacket p = new ClientboundPlayerPositionAndLookPacket();
 		p.setX(getX());
 		p.setY(getY());
 		p.setZ(getZ());

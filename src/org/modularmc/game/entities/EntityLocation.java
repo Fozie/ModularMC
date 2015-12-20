@@ -1,5 +1,9 @@
 package org.modularmc.game.entities;
 
+import org.modularmc.network.packets.play.player.PlayerLookPacket;
+import org.modularmc.network.packets.play.player.PlayerPositionPacket;
+import org.modularmc.network.packets.play.player.ServerboundPlayerPositionAndLookPacket;
+
 /**
  * @author Caspar Norée Palm
  */
@@ -48,5 +52,33 @@ public class EntityLocation {
 	}
 	public void setYaw(float yaw) {
 		this.yaw = yaw;
+	}
+
+	/**
+	 * Only to be invoked when entity is a player
+	 */
+	public void updateFromPacket(PlayerPositionPacket p) {
+		this.setX(p.getX());
+		this.setY(p.getY());
+		this.setZ(p.getZ());
+	}
+
+	/**
+	 * Only to be invoked when entity is a player
+	 */
+	public void updateFromPacket(PlayerLookPacket p) {
+		setYaw(p.getYaw());
+		setPitch(p.getPitch());
+	}
+
+	/**
+	 * Only to be invoked when entity is a player
+	 */
+	public void updateFromPacket(ServerboundPlayerPositionAndLookPacket p) {
+		this.setX(p.getX());
+		this.setY(p.getY());
+		this.setZ(p.getZ());
+		setYaw(p.getYaw());
+		setPitch(p.getPitch());
 	}
 }

@@ -6,7 +6,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import org.modularmc.io.ByteBufUtils;
+import org.modularmc.io.ByteUtils;
 
 /**
  * @author Caspar Norée Palm
@@ -17,7 +17,7 @@ public class LengthDecoder extends ByteToMessageDecoder {
 	protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> output) throws Exception {
 		if(buf.readableBytes() < 2)
 			return;
-		final int l = ByteBufUtils.readVarInt(buf);
+		final int l = ByteUtils.readVarInt(buf);
 		if(buf.readableBytes() < l)
 			return;
 		output.add(buf.readBytes(l));

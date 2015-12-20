@@ -1,5 +1,6 @@
 package org.modularmc;
 
+import org.modularmc.game.PlayerManager;
 import org.modularmc.handlers.LoginHandler;
 import org.modularmc.network.NetworkManager;
 
@@ -9,11 +10,12 @@ import org.modularmc.network.NetworkManager;
 public class Server {
 	private final NetworkManager net;
 	
-	private LoginHandler loginHandler;
+	public PlayerManager manager;
+	
+	 
 	
 	public Server() throws Exception {
 		net = new NetworkManager(this, 25565); //TODO: Config
-		loginHandler = new LoginHandler(this);
 		
 		while(true) {
 			net.processClients();

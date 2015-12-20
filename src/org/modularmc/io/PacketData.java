@@ -128,7 +128,7 @@ public class PacketData {
 
 	
 	public void writeDouble(final double v) {
-		writeDouble(Double.doubleToLongBits(v));
+		writeLong(Double.doubleToLongBits(v));
 	}
 	
 	public void writePosition(int x, int y, int z) {

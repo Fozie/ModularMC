@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
-import org.modularmc.io.ByteBufUtils;
+import org.modularmc.io.ByteUtils;
 
 /**
  * @author Caspar Norée Palm
@@ -17,7 +17,7 @@ public class LengthEncoder extends MessageToByteEncoder<ByteBuf> {
 		int headerLength = headerSize(dataLength);
 		output.ensureWritable(dataLength + headerLength);
 		
-		ByteBufUtils.writeVarInt(output, dataLength);
+		ByteUtils.writeVarInt(output, dataLength);
 		output.writeBytes(buf);
 		
 	}

@@ -1,7 +1,7 @@
 package org.modularmc.network.packets;
 
 import org.json.simple.JSONObject;
-import org.modularmc.io.ByteBufUtils;
+import org.modularmc.io.ByteUtils;
 import org.modularmc.io.PacketData;
 import org.modularmc.network.Packet;
 
@@ -28,7 +28,7 @@ public class StatusPacket extends Packet {
 		description.put("text", "TODO: Fix this so its not static :)");
 		status.put("description", description);
 		final String str = status.toJSONString();
-		data.ensureSpace(str.length() + ByteBufUtils.getVarIntSize(str.length()));
+		data.ensureSpace(str.length() + ByteUtils.getVarIntSize(str.length()));
 		data.writeUTF8VarInt(str);
 	}
 

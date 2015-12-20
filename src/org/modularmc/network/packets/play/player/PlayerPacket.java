@@ -21,6 +21,4 @@ public class PlayerPacket extends Packet {
 	public int getID() {
 		return 0x03;
 	}
-	
-	
 }

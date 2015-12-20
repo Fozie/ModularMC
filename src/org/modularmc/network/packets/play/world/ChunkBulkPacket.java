@@ -30,7 +30,7 @@ public class ChunkBulkPacket extends Packet {
 	
 	@Override
 	public int getID() {
-		return 0;
+		return 0x26;
 	}
 	
 	public void write(PacketData data) {

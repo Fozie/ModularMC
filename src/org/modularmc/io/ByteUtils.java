@@ -1,11 +1,33 @@
 package org.modularmc.io;
 
+import java.nio.charset.StandardCharsets;
+
 import io.netty.buffer.ByteBuf;
 
 /**
  * @author Caspar Norée Palm
  */
-public class ByteBufUtils {
+public class ByteUtils {
+	
+	public static byte[] writeUTF8VarInt(String str) {
+		byte[] b = new byte[getVarIntSize(str.length()) + str.length()]; 
+		int i = 0;
+		byte part;
+		int v = str.length();
+		while (true) {
+			part = (byte) (v & 0x7F);
+			v >>>= 7;
+			if (v != 0)
+				part |= 0x80;
+			b[i++] = part;
+			if (v == 0)
+				break;
+		}
+		
+		System.arraycopy(str.getBytes(StandardCharsets.UTF_8), 0, b, i, str.length());
+		return b;
+	}
+	
 	public static int readVarInt(ByteBuf byteBuf) {
 		int out = 0;
 		int numBytes = 0;

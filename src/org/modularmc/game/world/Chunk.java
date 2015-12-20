@@ -24,10 +24,16 @@ public class Chunk {
 		Arrays.fill(biomes, (byte) 1);
 		
 		sections = new ChunkSection[16];
-	}
+		
+		sections[0] = new ChunkSection(this, 0);
+	} 
 	
 	public final ChunkSection getSection(int y) {
 		return sections[y >> 4];
+	}
+	
+	public void tick() {
+		
 	}
 	
 	public int countSections() {

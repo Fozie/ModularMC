@@ -40,7 +40,7 @@ public final class NetworkManager {
 											.channel(NioServerSocketChannel.class)
 											.childHandler(new NettyChannelInitializer(server));
 		try {
-			bootstrap.bind(new InetSocketAddress("0.0.0.0", port)); //TODO: Configurable listing port and adress
+			bootstrap.bind(new InetSocketAddress("0.0.0.0", port)); //TODO: Configurable listing port and address
 		} catch (Throwable t) {
 			System.err.println("Failed to bind to port.");
 			System.exit(1);

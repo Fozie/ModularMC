@@ -7,7 +7,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 import org.modularmc.Logger;
-import org.modularmc.io.ByteBufUtils;
+import org.modularmc.io.ByteUtils;
 import org.modularmc.io.PacketData;
 import org.modularmc.network.Client;
 import org.modularmc.network.Packet;
@@ -24,7 +24,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
 		if(buf.readableBytes() == 0)
 			return;
 		
-		int id =  ByteBufUtils.readVarInt(buf);
+		int id =  ByteUtils.readVarInt(buf);
 		
 		Client.State state = ctx.pipeline().get(NettyChannelHandler.class).getClient().getState();
 		

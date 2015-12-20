@@ -5,15 +5,19 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modularmc.Server;
-import org.modularmc.game.Player;
+import org.modularmc.game.world.Chunk;
 import org.modularmc.game.world.Difficulty;
 import org.modularmc.game.world.Dimension;
 import org.modularmc.game.world.Gamemode;
+import org.modularmc.io.ByteUtils;
 import org.modularmc.network.Client;
 import org.modularmc.network.Client.State;
 import org.modularmc.network.packets.login.LoginSucessPacket;
+import org.modularmc.network.packets.play.CustomPacket;
 import org.modularmc.network.packets.play.JoinGamePacket;
-import org.modularmc.network.packets.play.player.ClientbondPlayerPositionAndLookPacket;
+import org.modularmc.network.packets.play.player.ClientboundPlayerPositionAndLookPacket;
+import org.modularmc.network.packets.play.player.PlayerAbilitiesPacket;
+import org.modularmc.network.packets.play.world.ChunkBulkPacket;
 import org.modularmc.network.packets.play.world.SpawnPositionPacket;
 
 /**
@@ -55,7 +59,7 @@ public class LoginHandler {
 		
 		LoginSucessPacket sucess = new LoginSucessPacket();
 		
-		sucess.setUsername("Fozie");
+		sucess.setUsername("GuineaPig");
 		sucess.setUuid(UUID.randomUUID());
 		
 		c.sendPacket(sucess);
@@ -69,19 +73,24 @@ public class LoginHandler {
 		
 		c.sendPacket(join);
 		
-		SpawnPositionPacket spawnpos = new SpawnPositionPacket();
+//		SpawnPositionPacket spawnpos = new SpawnPositionPacket();
+//		c.sendPacket(spawnpos);
+		ClientboundPlayerPositionAndLookPacket pac = new ClientboundPlayerPositionAndLookPacket();
+		pac.setX(1);
+		pac.setY(1);
+		pac.setZ(1);
 		
-		c.sendPacket(spawnpos);
+		pac.setYaw(90);
+		pac.setPitch(90);
 		
-		ClientbondPlayerPositionAndLookPacket p = new ClientbondPlayerPositionAndLookPacket();
-		p.setX(0);
-		p.setY(100);
-		p.setZ(0);
-		
-		p.setYaw(90);
-		p.setPitch(0);
-		
-		c.sendPacket(p);
-		c.sendPacket(p);
+		PlayerAbilitiesPacket abilities = new PlayerAbilitiesPacket();
+		abilities.setCanFly(true);
+		abilities.setFlying(true);
+		abilities.setInCreative(true);
+		abilities.setFlySpeed(1.5f);
+		abilities.setWalkSpeed(1f);
+		c.sendPacket(pac);
+		c.sendPacket(abilities);
+		c.sendPacket(pac);
 	}
 }
