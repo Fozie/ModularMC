@@ -1,7 +1,9 @@
 package org.modularmc.network.protocol;
 
-import org.modularmc.network.Packet;
+import java.util.HashMap;
+
 import org.modularmc.network.Client.State;
+import org.modularmc.network.Packet;
 import org.modularmc.network.packets.HandshakePacket;
 import org.modularmc.network.packets.PingPacket;
 import org.modularmc.network.packets.StatusRequestPacket;
@@ -14,78 +16,39 @@ public class Protocol {
 	
 	public static final Protocol PROTOCOL = new Protocol();
 	
-	public boolean hasPlayPacket(int id) {
-		switch(id) {
-			default: return false;
-		}
-	}
-
-	public Packet createPlayPacket(int id) {
-		switch(id) {
-			default: return null;
-		}
+	static {
+		PROTOCOL.statusPacket.put(0, StatusRequestPacket.class);
+		PROTOCOL.statusPacket.put(1, PingPacket.class);
+		
+		PROTOCOL.loginPackets.put(0, LoginPacket.class);
 	}
 	
-	public boolean hasLoginPacket(int id) {
-		switch(id) {
-			case 0: return true;
-			default: return false;
-		}
-	}
-
-	public Packet createLoginPacket(int id) {
-		switch(id) {
-			case 0: return new LoginPacket();
-			default: return null;
-		}
-	}
 	
-	public boolean hasHandshakePacket(int id) {
-		if(id == 0) 
-			return true;
-		return false;
-	}
-
-	public Packet createHandshakePacket(int id) {
-		return new HandshakePacket();
-	}
-	
-	public boolean hasStatusPacket(int id) {
-		switch(id) {
-			case 0: return true;
-			case 1: return true;
-			default: return false;
-		}
-	}
-
-	public Packet createStatusPacket(int id) {
-		switch(id) {
-			case 0: return new StatusRequestPacket();
-			case 1: return new PingPacket();
-			default: return null;
-		}
-	}
+	private final HashMap<Integer, Class<? extends Packet>> statusPacket = new HashMap<>(); //Handshake packets, status packets.
+	private final HashMap<Integer, Class<? extends Packet>> loginPackets     = new HashMap<>();
+	private final HashMap<Integer, Class<? extends Packet>> playPackets = new HashMap<>();
 
 	public boolean hasPacket(State state, int id) {
 		switch(state) {
-			case PLAY: return hasPlayPacket(id);
-			case LOGIN: return hasLoginPacket(id);
-			case STATUS: return hasStatusPacket(id);
-			case HANDSHAKE: return hasHandshakePacket(id);
+			case PLAY: 		return playPackets.containsKey(id);
+			case LOGIN: 	return loginPackets.containsKey(id);
+			case STATUS: 	return statusPacket.containsKey(id);
+			case HANDSHAKE: return (id == 0) ? true : false;
 		}
 		return false;
 	}
 
 	public Packet createPacket(State state, int id) {
-		switch(state) {
-		case PLAY: return createPlayPacket(id);
-		case LOGIN: return createLoginPacket(id);
-		case STATUS: return createStatusPacket(id);
-		case HANDSHAKE: return createHandshakePacket(id);
+		try {
+			switch(state) {
+				case PLAY: 		return playPackets.get(id).newInstance();
+				case LOGIN: 	return loginPackets.get(id).newInstance();
+				case STATUS: 	return statusPacket.get(id).newInstance();
+				case HANDSHAKE: return (id == 0) ? new HandshakePacket() : null;
+			}
+		} catch (InstantiationException | IllegalAccessException e) {
+			new Exception("Packet(ID:"+ state.name().toLowerCase() + "," + id + ") had an invalid constructor." + " E: " + e.getMessage()).printStackTrace();
 		}
-		new Exception("Wtf, something happend here...").printStackTrace();
 		return null;
 	}
-	
-	
 }
