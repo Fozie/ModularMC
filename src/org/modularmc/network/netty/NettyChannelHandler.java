@@ -3,9 +3,9 @@ package org.modularmc.network.netty;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import org.modularmc.Server;
 import org.modularmc.network.Client;
 import org.modularmc.network.Packet;
-import org.modularmc.server.Server;
 
 /**
  * @author Caspar Norée Palm

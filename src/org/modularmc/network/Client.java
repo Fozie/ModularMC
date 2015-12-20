@@ -2,12 +2,14 @@ package org.modularmc.network;
 
 import io.netty.channel.Channel;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import org.modularmc.Server;
 import org.modularmc.chat.ChatMessage;
+import org.modularmc.game.Player;
 import org.modularmc.network.packets.login.DisconnectPacket;
-import org.modularmc.server.Server;
 
 /**
  * @author Caspar Norée Palm
@@ -16,9 +18,9 @@ public class Client {
 	
 	final Server server;
 	
-	boolean isDead;
-	
 	private final Queue<Packet> packetQueue;
+	
+	private WeakReference<Player> player;
 	
 	public enum State {
 		HANDSHAKE,
@@ -38,11 +40,14 @@ public class Client {
 		this.packetQueue = new ArrayDeque<>(10);
 		System.out.println("Client created");
 		state = State.HANDSHAKE;
-		
-		isDead = false;
 	}
 
 	public void process() {
+		if(!ch.isActive()) {
+			destroy();
+			return;
+		}
+		
 		synchronized (packetQueue) {
 			Packet p;
 
@@ -74,22 +79,17 @@ public class Client {
 		destroy();
 	}
 	
-	/**
-	 * 
-	 */
 	public void destroy() {
-		isDead = true;
 		server.getNetwork().removeClient(this);
 		ch.close();
 		System.out.println("Client died");
+		if(player != null)
+			if(player.get() != null)
+				player.get().close();
 	}
 
 	public State getState() {
 		return state;
-	}
-	
-	public boolean isDead() {
-		return isDead;
 	}
 	
 	public void setState(State nextState) {
@@ -97,8 +97,16 @@ public class Client {
 	}
 	
 	public void sendPacket(Packet p) {
-		if(!isDead)
+		if(ch.isWritable())
 			ch.writeAndFlush(p);
+	}
+	
+	public boolean isActive() {
+		return ch.isActive();
+	}
+	
+	public void setPlayer(final Player p) {
+		player = new WeakReference<>(p);
 	}
 	
 }

@@ -3,7 +3,7 @@ package org.modularmc.game.world;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.modularmc.server.Server;
+import org.modularmc.Server;
 
 /**
  * @author Caspar Norée Palm
@@ -28,6 +28,8 @@ public class World {
 		this.dimensions = dimension;
 	}
 	
+	public void getChunk(int x, int y) {
+	}
 	
 	public static long encodeChunkPosition(final int x, final int y) {
 		return (long) x << 32 | y & 0xFFFFFFFFL;

@@ -30,7 +30,6 @@ public class ChunkBulkPacket extends Packet {
 	
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	

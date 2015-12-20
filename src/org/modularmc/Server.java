@@ -1,4 +1,4 @@
-package org.modularmc.server;
+package org.modularmc;
 
 import org.modularmc.handlers.LoginHandler;
 import org.modularmc.network.NetworkManager;

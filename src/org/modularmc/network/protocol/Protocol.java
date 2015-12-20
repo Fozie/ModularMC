@@ -8,6 +8,10 @@ import org.modularmc.network.packets.HandshakePacket;
 import org.modularmc.network.packets.PingPacket;
 import org.modularmc.network.packets.StatusRequestPacket;
 import org.modularmc.network.packets.login.LoginPacket;
+import org.modularmc.network.packets.play.player.PlayerLookPacket;
+import org.modularmc.network.packets.play.player.PlayerPacket;
+import org.modularmc.network.packets.play.player.PlayerPositionPacket;
+import org.modularmc.network.packets.play.player.ServerboundPlayerPositionAndLookPacket;
 
 /**
  * @author Caspar Norée Palm
@@ -17,17 +21,22 @@ public class Protocol {
 	public static final Protocol PROTOCOL = new Protocol();
 	
 	static {
-		PROTOCOL.statusPacket.put(0, StatusRequestPacket.class);
-		PROTOCOL.statusPacket.put(1, PingPacket.class);
+		PROTOCOL.statusPacket.put(0x00, StatusRequestPacket.class);
+		PROTOCOL.statusPacket.put(0x01, PingPacket.class);
 		
-		PROTOCOL.loginPackets.put(0, LoginPacket.class);
+		PROTOCOL.loginPackets.put(0x00, LoginPacket.class);
+		
+		PROTOCOL.playPackets.put(0x03, PlayerPacket.class);
+		PROTOCOL.playPackets.put(0x04, PlayerPositionPacket.class);
+		PROTOCOL.playPackets.put(0x05, PlayerLookPacket.class);
+		PROTOCOL.playPackets.put(0x06, ServerboundPlayerPositionAndLookPacket.class);
 	}
 	
 	
 	private final HashMap<Integer, Class<? extends Packet>> statusPacket = new HashMap<>(); //Handshake packets, status packets.
 	private final HashMap<Integer, Class<? extends Packet>> loginPackets     = new HashMap<>();
 	private final HashMap<Integer, Class<? extends Packet>> playPackets = new HashMap<>();
-
+	
 	public boolean hasPacket(State state, int id) {
 		switch(state) {
 			case PLAY: 		return playPackets.containsKey(id);

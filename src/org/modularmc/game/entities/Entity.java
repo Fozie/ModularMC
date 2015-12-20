@@ -5,57 +5,77 @@ import org.modularmc.game.world.World;
 /**
  * @author Caspar Norée Palm
  */
-public class Entity {
+public abstract class Entity {
 	private final World world;
 	
-	private double x,y,z;
-	private float yaw, pitch; 
+	private EntityLocation location;
+	
+	private boolean alive;
+	
+	private int age; // The age of the entity in ticks.
 	
 	public Entity(World world) {
 		this.world = world;
+		this.location = new EntityLocation();
 	}
-
+	
+	public void tick() {
+		
+	}
+	
+	public EntityLocation getLocation() {
+		return location;
+	}
+	
 	public double getX() {
-		return x;
+		return location.getX();
 	}
 
 	public void setX(double x) {
-		this.x = x;
+		location.setX(x);
 	}
 
 	public double getY() {
-		return y;
+		return location.getX();
 	}
 
 	public void setY(double y) {
-		this.y = y;
+		location.setY(y);
 	}
 
 	public double getZ() {
-		return z;
+		return location.getZ();
 	}
 
 	public void setZ(double z) {
-		this.z = z;
+		location.setZ(z);
 	}
 
 	public float getYaw() {
-		return yaw;
+		return location.getYaw();
 	}
 
 	public void setYaw(float yaw) {
-		this.yaw = yaw;
+		location.setYaw(yaw);
 	}
 
 	public float getPitch() {
-		return pitch;
+		return location.getPitch();
 	}
 
 	public void setPitch(float pitch) {
-		this.pitch = pitch;
+		location.setPitch(pitch);
 	}
 
 	public World getWorld() {
 		return world;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean active) {
+		this.alive = active;
 	}
 }

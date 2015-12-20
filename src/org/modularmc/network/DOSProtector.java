@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Caspar Norée Palm
  */
-public class DOSProtector {
+public class DOSProtector { // W.I.P
 	public static final DOSProtector instance = new DOSProtector();
 	
 	private ConcurrentHashMap<Integer, Integer> connectionMap;

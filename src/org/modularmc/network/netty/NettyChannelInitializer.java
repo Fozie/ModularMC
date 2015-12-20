@@ -3,12 +3,12 @@ package org.modularmc.network.netty;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
+import org.modularmc.Server;
 import org.modularmc.network.DOSProtector;
 import org.modularmc.network.protocol.LengthDecoder;
 import org.modularmc.network.protocol.LengthEncoder;
 import org.modularmc.network.protocol.PacketDecoder;
 import org.modularmc.network.protocol.PacketEncoder;
-import org.modularmc.server.Server;
 
 /**
  * @author Caspar Norée Palm

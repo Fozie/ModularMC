@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.modularmc.Server;
 import org.modularmc.game.Player;
 import org.modularmc.game.world.Difficulty;
 import org.modularmc.game.world.Dimension;
@@ -14,7 +15,6 @@ import org.modularmc.network.packets.login.LoginSucessPacket;
 import org.modularmc.network.packets.play.JoinGamePacket;
 import org.modularmc.network.packets.play.player.ClientbondPlayerPositionAndLookPacket;
 import org.modularmc.network.packets.play.world.SpawnPositionPacket;
-import org.modularmc.server.Server;
 
 /**
  * Handling Login AND joingame!

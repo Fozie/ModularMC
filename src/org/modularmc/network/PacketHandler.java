@@ -3,13 +3,13 @@ package org.modularmc.network;
 import java.lang.reflect.InvocationTargetException;
 
 import org.modularmc.Logger;
+import org.modularmc.Server;
 import org.modularmc.handlers.LoginHandler;
 import org.modularmc.network.packets.HandshakePacket;
 import org.modularmc.network.packets.PingPacket;
 import org.modularmc.network.packets.StatusPacket;
 import org.modularmc.network.packets.StatusRequestPacket;
 import org.modularmc.network.packets.login.LoginPacket;
-import org.modularmc.server.Server;
 
 /**
  * @author Caspar Norée Palm
@@ -19,6 +19,7 @@ public class PacketHandler {
 	final Server server;
 	
 	final LoginHandler loginHandler;
+	
 	
 	public PacketHandler(Server server) {
 		this.server = server;
@@ -49,8 +50,8 @@ public class PacketHandler {
 	}
 	
 	public void handle(Client c, LoginPacket packet) {
-//		c.disconnect("WIP");
-		loginHandler.addClient(c);
+		c.disconnect("WIP");
+		//loginHandler.addClient(c);
 	}
 
 	/**

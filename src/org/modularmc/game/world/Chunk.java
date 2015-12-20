@@ -49,7 +49,7 @@ public class Chunk {
 	public byte[] getData(boolean skyLight, boolean biomes) {
 		int dataSize = 0;
 		
-		dataSize += 8192 * countSections(); // A short for every block in every section (16*16*16 * 2) * amount of secions
+		dataSize += 8192 * countSections(); // A short for every block in every section (16*16*16 * 2) * amount of sections
 		
 		dataSize += 2048 * countSections(); // 0.5 byte for each block (NibbleArray)
 		if(skyLight)

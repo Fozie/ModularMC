@@ -1,3 +1,4 @@
 Ideas:
 
 - A thread that pack chunk data and sends them to players at request. This will remove load from the main thread. (Possibly only as a block streamer)
+- Checks for all packets to ensure the server wont crash or spam exceptions if a invalid clients sends corrupt packets

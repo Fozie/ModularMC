@@ -9,8 +9,8 @@ import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.modularmc.Server;
 import org.modularmc.network.netty.NettyChannelInitializer;
-import org.modularmc.server.Server;
 
 /**
  * @author Caspar Norée Palm
