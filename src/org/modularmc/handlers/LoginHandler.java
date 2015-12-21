@@ -5,20 +5,18 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modularmc.Server;
-import org.modularmc.game.world.Chunk;
 import org.modularmc.game.world.Difficulty;
 import org.modularmc.game.world.Dimension;
 import org.modularmc.game.world.Gamemode;
-import org.modularmc.io.ByteUtils;
+import org.modularmc.game.world.generate.SimpleWorldGenerator;
+import org.modularmc.game.world.generate.WorldGenerator;
 import org.modularmc.network.Client;
 import org.modularmc.network.Client.State;
 import org.modularmc.network.packets.login.LoginSucessPacket;
-import org.modularmc.network.packets.play.CustomPacket;
 import org.modularmc.network.packets.play.JoinGamePacket;
 import org.modularmc.network.packets.play.player.ClientboundPlayerPositionAndLookPacket;
 import org.modularmc.network.packets.play.player.PlayerAbilitiesPacket;
-import org.modularmc.network.packets.play.world.ChunkBulkPacket;
-import org.modularmc.network.packets.play.world.SpawnPositionPacket;
+import org.modularmc.network.packets.play.world.ChunkPacket;
 
 /**
  * Handling Login AND joingame!
@@ -77,7 +75,7 @@ public class LoginHandler {
 //		c.sendPacket(spawnpos);
 		ClientboundPlayerPositionAndLookPacket pac = new ClientboundPlayerPositionAndLookPacket();
 		pac.setX(1);
-		pac.setY(1);
+		pac.setY(10);
 		pac.setZ(1);
 		
 		pac.setYaw(90);
@@ -89,7 +87,15 @@ public class LoginHandler {
 		abilities.setInCreative(true);
 		abilities.setFlySpeed(1.5f);
 		abilities.setWalkSpeed(1f);
+		
+		ChunkPacket chunk = new ChunkPacket();
+		
+		WorldGenerator gen = new SimpleWorldGenerator();
+		
+		chunk.setChunk(gen.generateChunk(null, 0, 0));
+				
 		c.sendPacket(pac);
+		c.sendPacket(chunk);
 		c.sendPacket(abilities);
 		c.sendPacket(pac);
 	}

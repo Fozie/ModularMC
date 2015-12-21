@@ -47,7 +47,6 @@ public class ChunkBulkPacket extends Packet {
 			data.writeBytes(c.getData(sendSkyLight, true));
 		}
 		
-		
 	}
 	
 }

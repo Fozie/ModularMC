@@ -12,7 +12,7 @@ public class ChunkSection {
 	
 	private final int y; // Ranging between 0 - 15
 	
-	private char[] blockTypes;
+	private short[] blockTypes;
 	private byte[] blockLightning; // Nibblearray, each byte contains blocklightning for 2 blocks, 4 bits each
 	private byte[] skyLightning; // Nibblearray, each byte contains skylightning for 2 blocks, 4 bits each
 
@@ -24,11 +24,11 @@ public class ChunkSection {
 		this.chunk = chunk;
 		this.y = y;
 		
-		blockTypes = new char[8192];
+		blockTypes = new short[8192];
 		
 		blockLightning = new byte[2048];
 		skyLightning = new byte[2048];
-	
+		
 		Arrays.fill(skyLightning, (byte) -1);
 	}
 
@@ -40,7 +40,7 @@ public class ChunkSection {
 		return y;
 	}
 
-	public char[] blockTypes() {
+	public short[] blockTypes() {
 		return blockTypes;
 	}
 	
@@ -68,7 +68,11 @@ public class ChunkSection {
 		return NibbleUtils.get(skyLightning, index);
 	}
 	
-	public void setBlockType(int x, int y, int z, char val) {
+	public void setBlockType(int x, int y, int z, short val) {
+		if(val == 0)
+			--count;
+		else
+			++count;
 		blockTypes[blockIndex(x,y,z)] = val;
 	}
 }

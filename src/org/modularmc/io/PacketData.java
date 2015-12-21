@@ -14,7 +14,7 @@ import org.modularmc.utils.Vec3i;
 public class PacketData {
 	private final ByteBuf data;
 	
-	public PacketData(final ByteBuf buf) {
+	public PacketData(ByteBuf buf) {
 		this.data = buf;
 	}
 	
@@ -72,18 +72,18 @@ public class PacketData {
 		return out;
 	}
 
-	public byte[] read(final byte... input) {
+	public byte[] read(byte... input) {
 		data.readBytes(input);
 		return input;
 	}
 
-	public byte[] readBytes(final int size) {
+	public byte[] readBytes(int size) {
 		final byte[] r = new byte[size];
 		data.readBytes(r);
 		return r;
 	}
 
-	public String readString(final int size, final Charset charset) {
+	public String readString(int size, Charset charset) {
 		return new String(readBytes(size), charset);
 	}
 	
@@ -95,39 +95,47 @@ public class PacketData {
 		return readString(readVarInt() * 2, StandardCharsets.UTF_16);
 	}
 	
-	public void writeByte(final byte v) {
+	public void writeByte(byte v) {
 		data.writeByte(v);
 	}
 	
-	public void writeBoolean(final boolean v) {
+	public void writeBoolean(boolean v) {
 		if (v)
 			data.writeByte((byte) 0x01);
 		else
 			data.writeByte((byte) 0x00);
 	}
 
-	
 	public void writeShort(final short v) {
-		data.writeShort(v);
+		writeByte((byte) (0xff & v >> 8));
+		writeByte((byte) (0xff & v));
 	}
 
-	
 	public void writeInt(final int v) {
-		data.writeInt(v);
+		writeByte((byte) (0xff & v >> 24));
+		writeByte((byte) (0xff & v >> 16));
+		writeByte((byte) (0xff & v >> 8));
+		writeByte((byte) (0xff & v));
 	}
 
-	
 	public void writeLong(final long v) {
-		data.writeLong(v);
+		writeByte((byte) (0xff & v >> 56));
+		writeByte((byte) (0xff & v >> 48));
+		writeByte((byte) (0xff & v >> 40));
+		writeByte((byte) (0xff & v >> 32));
+		writeByte((byte) (0xff & v >> 24));
+		writeByte((byte) (0xff & v >> 16));
+		writeByte((byte) (0xff & v >> 8));
+		writeByte((byte) (0xff & v));
 	}
 
 	
-	public void writeFloat(final float v) {
+	public void writeFloat(float v) {
 		writeInt(Float.floatToIntBits(v));
 	}
 
 	
-	public void writeDouble(final double v) {
+	public void writeDouble(double v) {
 		writeLong(Double.doubleToLongBits(v));
 	}
 	

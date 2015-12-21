@@ -2,6 +2,8 @@ package org.modularmc.game.world;
 
 import java.util.Arrays;
 
+import org.modularmc.game.material.BlockType;
+
 /**
  * @author Caspar Norée Palm
  */
@@ -69,7 +71,7 @@ public class Chunk {
 		
 		
         for (final ChunkSection s : sections)
-            for (final char b : s.blockTypes()) {
+            for (final short b : s.blockTypes()) {
             	data[i++] = (byte) (b & 0xff);
             	data[i++] = (byte) (b >> 8);
             }
@@ -93,8 +95,31 @@ public class Chunk {
 				
 		return data;
 	}
+	
+	public void setBlock(int x, int y, int z, BlockType type) {
+		int section = y >> 4;
+        if(sections[section] != null)
+        	sections[section].setBlockType(x, y, z, type.getCodedID());
+        else {
+        	if(type==BlockType.AIR)
+        		return;
+        	sections[section] = new ChunkSection(this, section);
+        	sections[section].setBlockType(x, y, z, type.getCodedID());
+        }
+	}
 
-
+	public void setBiome(int x, int y, Biome biome) {
+		biomes[y*16+x] = biome.getID();
+	}
+	
+	public void getBiome(int x, int y, Biome biome) {
+		biomes[y*16+x] = biome.getID();
+	}
+	
+	public void fillBiome(Biome biome) {
+		Arrays.fill(biomes, biome.getID());
+	}
+	
 	public World getWorld() {
 		return world;
 	}
